@@ -14,12 +14,12 @@ ul {
 
 .shadow {
     position: absolute;
-    width: 3px;
-    height: 5px;
+    width: 10px;
+    height: 10px;
     background: rgb(77, 89, 251, 0.8);
     z-index: -1;
 
-    border-top-right-radius: 10px;
+    /* border-top-right-radius: 10px; */
 }
 
 #tabs {
