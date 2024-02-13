@@ -71,7 +71,8 @@ function renderTodoList(){
         const li = document.createElement('li')
         li.classList.add('todo')
         li.classList.add(item.status)
-        li.setAttribute('todo-data', item.value)
+        li.setAttribute('data-key', item.value)
+         //나중에 getAttribute('data-key')로 받는다.
         li.innerText = item.value
 
         const div = document.createElement('div')    
