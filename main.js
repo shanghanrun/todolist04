@@ -164,9 +164,16 @@ function editTodo(e){
         // 입력이 취소되었거나 공백 문자열이면 아무것도 하지 않음
         return;
     }
+    // 이미 있는 할일과 동일한 할일이 입력된 경우
+    let i = todoList.findIndex(item => item.value == newValue)
+    if( i != -1){
+        alert(`이미 있는 할 일(${newValue})이 입력되었습니다`)
+        return;
+    }
+
     todoList[itemIndex] = {...todoList[itemIndex], value:newValue}
 
-    let i = ongoingList.findIndex(item => item.value == value)
+    i = ongoingList.findIndex(item => item.value == value)
     if(i !=-1){
         ongoingList[i] = {...ongoingList[i], value:newValue}
     }
