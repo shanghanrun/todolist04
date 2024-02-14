@@ -97,6 +97,10 @@ function renderTodoList(){
          // 혹은 li.key?
         span.innerText = item.value
         span.style.padding = '10px';
+        span.style.lineHeight = 'normal';
+        span.style.verticalAlign= 'middle';
+        span.style.paddingTop = '16px';
+        span.style.paddingBottom = '4px';
 
         const div = document.createElement('div')   
 
