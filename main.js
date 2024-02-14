@@ -146,7 +146,8 @@ function renderTodoList(){
         li.style.borderTopLeftRadius = '5px';
         li.style.width = '220px';
         li.style.height = '150px';
-        li.style.draggable =true;
+        // li.style.draggable =true;
+        li.setAttribute('draggable', 'true')
 
         if (!item.isCompleted){
             li.style.background ='#91f6b6'
@@ -156,35 +157,37 @@ function renderTodoList(){
             li.style.color = 'gray'
         } 
         
+        li.addEventListener('dblclick', function()
+        {deleteLiItem(deletingItem)});
         //li 마우스드래그(좌측)로 삭제이벤트
-        li.addEventListener('mousedown', function(e){
-            //왼쪽버튼 e.button ===0
-            if(e.button ==0 && e.target.tagName !=='BUTTON'){
-                console.log('clicked')
-                startX = e.clientX;
-                isDragging = true;
-                li.classList.add('dragging')
-            }
-        })
-        li.addEventListener('mouseup', function(e){
-            if(isDragging){
-                li.classList.remove('dragging')
-                isDragging =false
-            }            
-        })
-        li.addEventListener('mousemove', function(e){
-            if(isDragging){ 
-                const currentX = e.clientX;
-                deltaX = currentX - startX;
-                console.log('deltaX', deltaX)
+        // li.addEventListener('mousedown', function(e){
+        //     //왼쪽버튼 e.button ===0
+        //     if(e.button ==0 && e.target.tagName !=='BUTTON'){
+        //         console.log('clicked')
+        //         startX = e.clientX;
+        //         isDragging = true;
+        //         li.classList.add('dragging')
+        //     }
+        // })
+        // li.addEventListener('mouseup', function(e){
+        //     if(isDragging){
+        //         li.classList.remove('dragging')
+        //         isDragging =false
+        //     }            
+        // })
+        // li.addEventListener('mousemove', function(e){
+        //     if(isDragging){ 
+        //         const currentX = e.clientX;
+        //         deltaX = currentX - startX;
+        //         console.log('deltaX', deltaX)
 
-                if (deltaX <-50 || deltaX >50){
-                    console.log('deltaX :', deltaX)
-                    deleteLiItem(deletingItem)
-                    isDragging = false;
-                }
-            }
-        })
+        //         if (deltaX <-30 || deltaX >30){
+        //             console.log('deltaX :', deltaX)
+        //             deleteLiItem(deletingItem)
+        //             isDragging = false;
+        //         }
+        //     }
+        // })
         
         todoUl.appendChild(li)
     })
