@@ -5,7 +5,7 @@ const debugDoneList = document.querySelector('#done-list')
 const shadow = document.querySelector('.shadow')
 const tabs = document.querySelectorAll('.tab')
 tabs.forEach(tab => tab.addEventListener('click', indicator))
-tabs.forEach(tab => tab.addEventListener('click', render))
+// tabs.forEach(tab => tab.addEventListener('click', render))
 
 const todoClass = document.querySelector('.todos')
 function indicator(e){
@@ -29,6 +29,8 @@ function indicator(e){
         todoClass.style.background ='rgba(139, 189, 199, 0.8)';
     }
     todoClass.style.borderTop = '0.1px dotted lightgray';
+
+    render(e);
     
 }
 
