@@ -161,10 +161,17 @@ function renderTodoList(){
                 li.classList.add('dragging')
             }
         })
+        li.addEventListener('mouseup', function(e){
+            if(isDragging){
+                li.classList.remove('dragging')
+                isDragging =false
+            }            
+        })
         li.addEventListener('mousemove', function(e){
             if(isDragging){ 
                 const currentX = e.clientX;
                 deltaX = currentX - startX;
+                console.log('deltaX', deltaX)
 
                 if (deltaX <-40){
                     console.log('deltaX :', deltaX)
@@ -173,11 +180,7 @@ function renderTodoList(){
                 }
             }
         })
-        li.addEventListener('mouseup', function(e){
-            if(isDragging){
-                li.classList.remove('dragging')
-            }
-        })
+        
         todoUl.appendChild(li)
     })
     
