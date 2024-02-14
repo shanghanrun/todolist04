@@ -5,7 +5,7 @@ const debugDoneList = document.querySelector('#done-list')
 const shadow = document.querySelector('.shadow')
 const tabs = document.querySelectorAll('.tab')
 tabs.forEach(tab => tab.addEventListener('click', indicator))
-tabs.forEach(tab => addEventListener('click', render))
+tabs.forEach(tab => tab.addEventListener('click', render))
 
 const todoClass = document.querySelector('.todos')
 function indicator(e){
