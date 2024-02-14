@@ -173,7 +173,7 @@ function renderTodoList(){
                 deltaX = currentX - startX;
                 console.log('deltaX', deltaX)
 
-                if (deltaX <-40){
+                if (deltaX <-40 || deltaX >40){
                     console.log('deltaX :', deltaX)
                     deleteLiItem(deletingItem)
                     isDragging = false;
