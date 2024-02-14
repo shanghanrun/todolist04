@@ -38,6 +38,7 @@ ul {
     height: 10px;
     background: rgb(77, 89, 251, 0.8);
     z-index: -1;
+    transition: all .6s;
 
     /* border-top-right-radius: 10px; */
 }
@@ -52,6 +53,7 @@ ul {
     /* border-bottom: 1px solid black; */
     border-left: 1px solid black;
     border-top-right-radius: 10px;
+    transition: all .6s;
 }
 
 #tabs li:last-child {
@@ -63,7 +65,16 @@ ul {
 
 }
 
+.todo {
+    position: relative;
+    transition: transform 0.2s ease;
+}
 
+.todo.dragging {
+    transform: translateY(-10px);
+    transform: translateX(-10px);
+    opacity: 0.7;
+}
 
 .debug {
     margin-top: 10px;

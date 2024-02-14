@@ -88,6 +88,10 @@ function renderTodoList(){
     todoUl.innerHTML ='';
 
     todoList.forEach( item => {
+        let startX;
+        let isDragging = false;
+        let deletingItem = {...item}
+
         const li = document.createElement('li')
         const span = document.createElement('span') 
         li.classList.add('todo')
@@ -145,8 +149,35 @@ function renderTodoList(){
         } else{
             li.style.background ='rgba(139, 189, 199, 0.8)'
             li.style.color = 'gray'
-        }        
-    
+        } 
+        
+        //li 마우스드래그(좌측)로 삭제이벤트
+        li.addEventListener('mousedown', function(e){
+            //왼쪽버튼 e.button ===0
+            if(e.button ==0 && e.target.tagName !=='BUTTON'){
+                console.log('clicked')
+                startX = e.clientX;
+                isDragging = true;
+                li.classList.add('dragging')
+            }
+        })
+        li.addEventListener('mousemove', function(e){
+            if(isDragging){ 
+                const currentX = e.clientX;
+                deltaX = currentX - startX;
+
+                if (deltaX <-40){
+                    console.log('deltaX :', deltaX)
+                    deleteLiItem(deletingItem)
+                    isDragging = false;
+                }
+            }
+        })
+        li.addEventListener('mouseup', function(e){
+            if(isDragging){
+                li.classList.remove('dragging')
+            }
+        })
         todoUl.appendChild(li)
     })
     
@@ -154,6 +185,14 @@ function renderTodoList(){
     todoUl.style.flexWrap ='wrap';
 
     showDebug()
+}
+
+function deleteLiItem(deletingItem){
+    todoList = todoList.filter(item => item.value != deletingItem.value)
+    ongoingList = ongoingList.filter(item => item.value != deletingItem.value)
+    doneList = doneList.filter(item => item.value != deletingItem.value)
+    
+    renderTodoList()
 }
 
 function editTodo(e){
@@ -257,6 +296,7 @@ function checkTodo(event){
 
 
 function deleteTodo(event){
+
     const button = event.target;
     const div = button.parentNode;
     const li = div.parentNode;
