@@ -138,12 +138,15 @@ function renderTodoList(){
         li.style.display = 'flex';
         li.style.justifyContent = 'space-between'
         li.style.borderBottom = '1px solid gray';
-        li.style.margin = '10px';
+        li.style.marginTop = '10px';
+        li.style.marginLeft= '30px';
+        li.style.marginBottom ='10px';
         li.style.padding = '10px';
 
         li.style.borderTopLeftRadius = '5px';
         li.style.width = '220px';
         li.style.height = '150px';
+        li.style.draggable =true;
 
         if (!item.isCompleted){
             li.style.background ='#91f6b6'
@@ -175,7 +178,7 @@ function renderTodoList(){
                 deltaX = currentX - startX;
                 console.log('deltaX', deltaX)
 
-                if (deltaX <-40 || deltaX >40){
+                if (deltaX <-50 || deltaX >50){
                     console.log('deltaX :', deltaX)
                     deleteLiItem(deletingItem)
                     isDragging = false;
