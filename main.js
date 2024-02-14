@@ -51,7 +51,7 @@ input.addEventListener('keyup', function(e){
 function addToList(){
     const inputValue = input.value.trim();
     console.log('inputValue ', inputValue)    
-    const item = {value: inputValue, status: 'ongoing' }
+    const item = {value: inputValue, isCompleted: false }
     // 중복값 못들어가게 
     const i = todoList.findIndex(todo => todo.value == inputValue);
     if( inputValue !=''){
@@ -91,7 +91,7 @@ function renderTodoList(){
         const li = document.createElement('li')
         const span = document.createElement('span') 
         li.classList.add('todo')
-        li.classList.add(item.status)
+        
         li.setAttribute('data-key', item.value)
          //나중에 getAttribute('data-key')로 받는다.
          // 혹은 li.key?
@@ -99,17 +99,27 @@ function renderTodoList(){
         span.style.padding = '10px';
 
         const div = document.createElement('div')   
+
+        const editButton = document.createElement('button')
+        editButton.innerHTML ='🖊'
+        editButton.addEventListener('click', editTodo)
+        editButton.style.padding = '10px';
+        editButton.style.margin = '10px';
+
         const doneButton = document.createElement('button')
-        doneButton.innerHTML = '완료'
+        doneButton.innerHTML = '✔'
         doneButton.addEventListener('click', checkTodo)
         doneButton.style.padding ='10px';
-            
+        doneButton.style.margin = '10px';    
+
         const deleteButton = document.createElement('button')
-        deleteButton.innerHTML='삭제'
+        deleteButton.innerHTML= '❌'
         deleteButton.addEventListener('click', deleteTodo)
         deleteButton.style.padding = '10px';
         deleteButton.style.marginLeft ='10px';
 
+
+        div.appendChild(editButton)
         div.appendChild(doneButton)
         div.appendChild(deleteButton)
 
@@ -120,11 +130,11 @@ function renderTodoList(){
         li.style.borderBottom = '1px solid gray';
         li.style.margin = '10px';
         li.style.padding = '10px';
-        if (item.status == 'ongoing'){
+        if (!item.isCompleted){
             li.style.background ='#19f76a'
             li.style.color = 'black'
         } else{
-            li.style.background ='lightgray'
+            li.style.background ='rgba(139, 189, 199, 0.8)'
             li.style.color = 'gray'
         }        
     
@@ -132,6 +142,33 @@ function renderTodoList(){
     })
 
     showDebug()
+}
+
+function editTodo(e){
+    const button = e.target;
+    const div = button.parentNode;
+    const li = div.parentNode;
+    const span = li.firstChild
+    const value = span.textContent;
+    const itemIndex = todoList.findIndex( item => item.value == value)
+
+    const newValue = prompt(`기존 할일은 "${value}"입니다.\n새로운 일을 입력하세요.`)
+    // 사용자가 값을 입력하지 않거나 취소를 누른 경우 처리
+    if (value === null || value.trim() === '') {
+        // 입력이 취소되었거나 공백 문자열이면 아무것도 하지 않음
+        return;
+    }
+    todoList[itemIndex] = {...todoList[itemIndex], value:newValue}
+
+    let i = ongoingList.findIndex(item => item.value == value)
+    if(i !=-1){
+        ongoingList[i] = {...ongoingList[i], value:newValue}
+    }
+    i = doneList.findIndex(item => item.value == value)
+    if(i != -1){
+        doneList[i] = {...doneList[i], value: newValue}
+    }
+    renderTodoList()
 }
 
 function checkTodo(event){
@@ -146,32 +183,50 @@ function checkTodo(event){
     console.log('key :', key)
     const itemIndex = todoList.findIndex( item => item.value == value)
     const item = todoList.find(item => item.value == value)
+    // item은 단순 값이 아니라 객체라서 todoList와 연결되어 참조하고 있다.
+    // 그래서 item의 변화는 todoList의 객체값에 영향을 미치니 조심해서 사용해야 된다.
+
     console.log('itemIndex: ',itemIndex)
     console.log(todoList[itemIndex])
-
-    todoList[itemIndex].status ='done'
+    console.log('todoList 이전:', todoList)
+    // item을 사용하지 않고, todoList[itemIndex]를 사용해야 todoList가 변화된다.
     
+    // item.isCompleted = !item.isCompleted
+    todoList[itemIndex].isCompleted = !(todoList[itemIndex].isCompleted);
+    console.log('todoList 이후 :', todoList)
+
+    // todoList[itemIndex]가 객체라서 함부로 갖다쓰면, 서로 연결된다.
+    const newItem = {...todoList[itemIndex]} //독립 객체값으로 만듬
+
     // ongoingList에서 해당 item을 삭제한다.
-    ongoingList = ongoingList.filter(item => item.value != value)
-    console.log('ongoingList :', ongoingList)
+    if(todoList[itemIndex].isCompleted){
+        ongoingList = ongoingList.filter(item => item.value != value)
+    } else{
+        // 오히려 추가한다.
+        ongoingList = [...ongoingList, newItem]
+    }
 
     // doneList에 해당 item을 추가한다.
-    // 그런데, 이미 추가된 것은 다시 추가되지 않도록 한다.
-    const i = doneList.findIndex( item => item.value ==value)
-    if (i == -1){
-        // 해당 아이템에 없을 경우에 추가한다.
-        doneList = [...doneList, {value: value, status: 'done'}]
-        console.log('doneList :', doneList)       
+    if(todoList[itemIndex].isCompleted){
+        // 그런데, 이미 추가된 것은 다시 추가되지 않도록 한다.
+        const i = doneList.findIndex( item => item.value ==value)
+        if (i == -1){
+            // 해당 아이템에 없을 경우에 추가한다.
+            doneList = [...doneList, newItem]
+            console.log('doneList :', doneList)       
+        }
+    } else{
+        doneList = doneList.filter(item => item.value !=value)
     }
 
     // renderTodoList();
     // 바로 다시 랜더하면 화면이 지워진다.
     //그리고 사실 다시 랜더할 필요없이, 아래 사항만 바뀌면 된다.
-    if (item.status == 'ongoing'){
+    if (!todoList[itemIndex].isCompleted){
             li.style.background ='#19f76a'
             li.style.color = 'black'
         } else{
-            li.style.background ='lightgray'
+            li.style.background ='rgba(139, 189, 199, 0.8)'
             li.style.color = 'gray'
         }    
 
@@ -245,5 +300,3 @@ function renderOtherList(type){
     showDebug()
 }
 
-
-/// 완료를 누를 때, 리스트 목록이 삭제되는 문제 해겷해야 된다.
