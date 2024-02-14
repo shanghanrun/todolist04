@@ -22,8 +22,8 @@ function indicator(e){
         shadow.style.background ='rgb(77, 89, 251, 0.8)'
         todoClass.style.background ='rgb(77, 89, 251, 0.8)';
     } else if(e.target.id == 'ongoing'){
-        shadow.style.background ='rgba(77, 251, 97, 0.8)'
-        todoClass.style.background ='rgba(77, 251, 97, 0.8)';
+        shadow.style.background ='#91f6b6'
+        todoClass.style.background ='#91f6b6';
     } else if(e.target.id =='done'){
         shadow.style.background ='rgba(139, 189, 199, 0.8)'
         todoClass.style.background ='rgba(139, 189, 199, 0.8)';
@@ -136,8 +136,11 @@ function renderTodoList(){
         li.style.padding = '10px';
 
         li.style.borderTopLeftRadius = '5px';
+        li.style.width = '220px';
+        li.style.height = '150px';
+
         if (!item.isCompleted){
-            li.style.background ='#19f76a'
+            li.style.background ='#91f6b6'
             li.style.color = 'black'
         } else{
             li.style.background ='rgba(139, 189, 199, 0.8)'
@@ -146,6 +149,9 @@ function renderTodoList(){
     
         todoUl.appendChild(li)
     })
+    
+    todoUl.style.display = 'flex';
+    todoUl.style.flexWrap ='wrap';
 
     showDebug()
 }
@@ -158,10 +164,12 @@ function editTodo(e){
     const value = span.textContent;
     const itemIndex = todoList.findIndex( item => item.value == value)
 
-    const newValue = prompt(`기존 할일은 "${value}"입니다.\n새로운 일을 입력하세요.`)
+    let newValue = prompt(`기존 할일은 "${value}"입니다.\n새로운 일을 입력하세요.`)
     // 사용자가 값을 입력하지 않거나 취소를 누른 경우 처리
-    if (value === null || value.trim() === '') {
+    newValue = newValue.trim()
+    if (newValue == null || newValue == '') {
         // 입력이 취소되었거나 공백 문자열이면 아무것도 하지 않음
+        alert('입력문자가 없습니다.')
         return;
     }
     // 이미 있는 할일과 동일한 할일이 입력된 경우
@@ -236,7 +244,7 @@ function checkTodo(event){
     // 바로 다시 랜더하면 화면이 지워진다.
     //그리고 사실 다시 랜더할 필요없이, 아래 사항만 바뀌면 된다.
     if (!todoList[itemIndex].isCompleted){
-            li.style.background ='#19f76a'
+            li.style.background ='#91f6b6'
             li.style.color = 'black'
         } else{
             li.style.background ='rgba(139, 189, 199, 0.8)'
@@ -308,6 +316,7 @@ function renderOtherList(type){
         // }        
     
         todoUl.appendChild(li)
+        
     })
 
     showDebug()
