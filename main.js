@@ -130,6 +130,8 @@ function renderTodoList(){
         li.style.borderBottom = '1px solid gray';
         li.style.margin = '10px';
         li.style.padding = '10px';
+
+        li.style.borderTopLeftRadius = '5px';
         if (!item.isCompleted){
             li.style.background ='#19f76a'
             li.style.color = 'black'
